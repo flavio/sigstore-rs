@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;cosign&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../sigstore/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;cosign&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../sigstore/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -251,18 +252,93 @@
 <span id="251">251</span>
 <span id="252">252</span>
 <span id="253">253</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Strucs providing cosign capabilities</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+</pre><pre class="rust"><code><span class="comment">//</span>
+<span class="comment">// Copyright 2021 The Sigstore Authors.</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="comment">// you may not use this file except in compliance with the License.</span>
+<span class="comment">// You may obtain a copy of the License at</span>
+<span class="comment">//</span>
+<span class="comment">//     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="comment">//</span>
+<span class="comment">// Unless required by applicable law or agreed to in writing, software</span>
+<span class="comment">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="comment">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="comment">// See the License for the specific language governing permissions and</span>
+<span class="comment">// limitations under the License.</span>
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="prelude-ty">Result</span>};
+<span class="doccomment">//! Strucs providing cosign verification capabilities</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The focus of this crate is to provide the verification capabilities of cosign,</span>
+<span class="doccomment">//! not the signing one.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Sigstore verification can be done using [`sigstore::cosign::Client`](crate::cosign::client::Client).</span>
+<span class="doccomment">//! Instances of this struct can be created via the [`sigstore::cosign::ClientBuilder`](crate::cosign::client_builder::ClientBuilder).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## What is currently supported</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The crate implements the following verification mechanisms:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!   * Verify using a given key</span>
+<span class="doccomment">//!   * Verify bundle produced by transparency log (Rekor)</span>
+<span class="doccomment">//!   * Verify signature produced in keyless mode, using Fulcio Web-PKI</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Signature annotations and certificate email can be provided at verification time.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Unit testing inside of our own libraries</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! In case you want to mock sigstore interactions inside of your own code, you</span>
+<span class="doccomment">//! can implement the [`CosignCapabilities`] trait inside of your test suite.</span>
+
 <span class="kw">use</span> <span class="ident">async_trait::async_trait</span>;
-<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">tracing::warn</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::registry</span>::{<span class="ident">Auth</span>, <span class="ident">ClientConfig</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::simple_signing::SimpleSigning</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::{<span class="prelude-ty">Result</span>, <span class="ident">SigstoreError</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::registry::Auth</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="ident">SIGSTORE_OCI_MEDIA_TYPE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
-    <span class="string">&quot;application/vnd.dev.cosign.simplesigning.v1+json&quot;</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="ident">SIGSTORE_SIGNATURE_ANNOTATION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;dev.cosignproject.cosign/signature&quot;</span>;
+<span class="kw">mod</span> <span class="ident">bundle</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">constants</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">signature_layers</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">signature_layers::SignatureLayer</span>;
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::client::Client</span>;
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client_builder</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::client_builder::ClientBuilder</span>;
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">verification_constraint</span>;
+<span class="kw">use</span> <span class="ident">verification_constraint::VerificationConstraintVec</span>;
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="doccomment">/// Cosign Abilities that have to be implemented by a</span>
@@ -270,241 +346,225 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CosignCapabilities</span> {
     <span class="doccomment">/// Calculate the cosign image reference.</span>
     <span class="doccomment">/// This is the location cosign stores signatures.</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">triangulate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;</span>;
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">triangulate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">image</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Ensure the provided key is used to sign at least one of the layers of the</span>
-    <span class="doccomment">/// signature image produced by cosign.</span>
+    <span class="doccomment">/// Returns the list of [`SignatureLayer`](crate::cosign::signature_layers::SignatureLayer)</span>
+    <span class="doccomment">/// objects that are associated with the given signature object.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns the list of SimpleSigning objects that have been signed by the given</span>
-    <span class="doccomment">/// key.</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+    <span class="doccomment">/// When Fulcio&#39;s integration has been enabled, the returned `SignatureLayer`</span>
+    <span class="doccomment">/// objects have been verified using the certificates bundled inside of the</span>
+    <span class="doccomment">/// signature image. All these certificates have been issues by Fulcio&#39;s CA.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When Rekor&#39;s integration is enabled, the [`SignatureLayer`] objects have</span>
+    <span class="doccomment">/// been successfully verified using the Bundle object found inside of the</span>
+    <span class="doccomment">/// signature image. All the Bundled objects have been verified using Rekor&#39;s</span>
+    <span class="doccomment">/// signature.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// These returned objects can then be filtered using the [`filter_signature_layers`]</span>
+    <span class="doccomment">/// function.</span>
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">trusted_signature_layers</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>,
         <span class="ident">source_image_digest</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">cosign_image</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">public_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">annotations</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimpleSigning</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
-<span class="doccomment">/// Cosign Client</span>
+<span class="doccomment">/// Given a list of trusted `SignatureLayer`, find all the layers that satisfy</span>
+<span class="doccomment">/// the given constraints.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Given a container image/oci artifact, calculate the location of</span>
-<span class="doccomment">/// its cosign signature inside of a registry:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use crate::sigstore::cosign::CosignCapabilities;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// pub async fn main() {</span>
-<span class="doccomment">///   let auth = &amp;sigstore::registry::Auth::Anonymous;</span>
-<span class="doccomment">///   let mut client = sigstore::cosign::Client::default();</span>
-<span class="doccomment">///   let image = &quot;registry-testing.svc.lan/kubewarden/disallow-service-nodeport:v0.1.0&quot;;</span>
-<span class="doccomment">///   let (cosign_signature_image, source_image_digest) = client.triangulate(</span>
-<span class="doccomment">///     image,</span>
-<span class="doccomment">///     auth</span>
-<span class="doccomment">///   ).await.unwrap();</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Verify the signature of a container image/oci artifact:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use crate::sigstore::cosign::CosignCapabilities;</span>
-<span class="doccomment">/// use std::collections::HashMap;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// pub async fn main() {</span>
-<span class="doccomment">///   let auth = &amp;sigstore::registry::Auth::Anonymous;</span>
-<span class="doccomment">///   let mut client = sigstore::cosign::Client::default();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///   // Obtained via `triangulate`</span>
-<span class="doccomment">///   let cosign_image = &quot;registry-testing.svc.lan/kubewarden/disallow-service-nodeport:sha256-5f481572d088dc4023afb35fced9530ced3d9b03bf7299c6f492163cb9f0452e.sig&quot;;</span>
-<span class="doccomment">///   // Obtained via `triangulate`</span>
-<span class="doccomment">///   let source_image_digest = &quot;sha256-5f481572d088dc4023afb35fced9530ced3d9b03bf7299c6f492163cb9f0452e&quot;;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///   let mut annotations: HashMap&lt;String, String&gt; = HashMap::new();</span>
-<span class="doccomment">///   annotations.insert(&quot;env&quot;.to_string(), &quot;prod&quot;.to_string());</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///   let verification_key = &quot;contents of a `cosign.pub` key read from the disk&quot;;</span>
-<span class="doccomment">///   let signatures_matching_requirements = client.verify(</span>
-<span class="doccomment">///     auth,</span>
-<span class="doccomment">///     cosign_image,</span>
-<span class="doccomment">///     source_image_digest,</span>
-<span class="doccomment">///     verification_key,</span>
-<span class="doccomment">///     Some(annotations)</span>
-<span class="doccomment">///   ).await.unwrap();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///   if signatures_matching_requirements.is_empty() {</span>
-<span class="doccomment">///     panic!(&quot;no signature is matching the requirments&quot;);</span>
-<span class="doccomment">///   } else {</span>
-<span class="doccomment">///     println!(&quot;signatures matching the requirements: {:?}&quot;,</span>
-<span class="doccomment">///         signatures_matching_requirements);</span>
-<span class="doccomment">///   }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span> {
-    <span class="ident">registry_client</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident"><span class="kw">crate</span>::registry::ClientCapabilities</span><span class="op">&gt;</span>,
-}
+<span class="doccomment">/// See the documentation of the [`cosign::verification_constraint`](crate::cosign::verification_constraint) module for more</span>
+<span class="doccomment">/// details about how to define verification constraints.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter_signature_layers</span>(
+    <span class="ident">signature_layers</span>: <span class="kw-2">&amp;</span>[<span class="ident">SignatureLayer</span>],
+    <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">signature_layers</span>
+            .<span class="ident">iter</span>()
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">sl</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">is_a_match</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">is_empty</span>() {
+                    <span class="bool-val">true</span>
+                } <span class="kw">else</span> {
+                    <span class="op">!</span><span class="ident">constraints</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
+                        <span class="kw">match</span> <span class="ident">c</span>.<span class="ident">verify</span>(<span class="ident">sl</span>) {
+                            <span class="prelude-val">Ok</span>(<span class="ident">verification_passed</span>) =&gt; <span class="op">!</span><span class="ident">verification_passed</span>,
+                            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                                <span class="macro">warn!</span>(<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="ident">constraint</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">c</span>, <span class="string">&quot;Skipping layer because constraint verification returned an error&quot;</span>);
+                                <span class="comment">// handle errors as verification failures</span>
+                                <span class="bool-val">false</span>
+                            }
+                        }
+                    })
+                };
+                <span class="ident">is_a_match</span>
+            })
+            .<span class="ident">cloned</span>()
+            .<span class="ident">collect</span>();
 
-<span class="kw">impl</span> <span class="ident">Client</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">ClientConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">oci_client</span> <span class="op">=</span> <span class="ident">oci_distribution::client::Client::new</span>(<span class="ident">config</span>.<span class="ident">into</span>());
-        <span class="ident">Client</span> {
-            <span class="ident">registry_client</span>: <span class="ident">Box::new</span>(<span class="ident"><span class="kw">crate</span>::registry::OciClient</span> {
-                <span class="ident">registry_client</span>: <span class="ident">oci_client</span>,
-            }),
-        }
+    <span class="kw">if</span> <span class="ident">layers</span>.<span class="ident">is_empty</span>() {
+        <span class="prelude-val">Err</span>(<span class="ident">SigstoreError::SigstoreNoVerifiedLayer</span>)
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">layers</span>)
     }
-}
-
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Client</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">oci_client</span> <span class="op">=</span> <span class="ident">oci_distribution::client::Client::default</span>();
-        <span class="ident">Client</span> {
-            <span class="ident">registry_client</span>: <span class="ident">Box::new</span>(<span class="ident"><span class="kw">crate</span>::registry::OciClient</span> {
-                <span class="ident">registry_client</span>: <span class="ident">oci_client</span>,
-            }),
-        }
-    }
-}
-
-<span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">CosignCapabilities</span> <span class="kw">for</span> <span class="ident">Client</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">triangulate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">image_reference</span>: <span class="ident">oci_distribution::Reference</span> <span class="op">=</span> <span class="ident">image</span>
-            .<span class="ident">parse</span>()
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Cannot parse image reference &#39;{}&#39;: {:?}&quot;</span>, <span class="ident">image</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
-
-        <span class="kw">let</span> <span class="ident">manifest_digest</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">registry_client</span>
-            .<span class="ident">fetch_manifest_digest</span>(<span class="kw-2">&amp;</span><span class="ident">image_reference</span>, <span class="kw-2">&amp;</span><span class="ident">auth</span>.<span class="ident">into</span>())
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="macro">anyhow!</span>(
-                    <span class="string">&quot;Cannot fetch manifest digest for {:?}: {:?}&quot;</span>,
-                    <span class="ident">image_reference</span>,
-                    <span class="ident">e</span>
-                )
-            })<span class="question-mark">?</span>;
-
-        <span class="kw">let</span> <span class="ident">sign</span> <span class="op">=</span> <span class="macro">format!</span>(
-            <span class="string">&quot;{}/{}:{}.sig&quot;</span>,
-            <span class="ident">image_reference</span>.<span class="ident">registry</span>(),
-            <span class="ident">image_reference</span>.<span class="ident">repository</span>(),
-            <span class="ident">manifest_digest</span>.<span class="ident">replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;-&quot;</span>)
-        );
-        <span class="kw">let</span> <span class="ident">reference</span> <span class="op">=</span> <span class="ident">sign</span>
-            .<span class="ident">parse</span>()
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Cannot calculate signature object reference {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>((<span class="ident">reference</span>, <span class="ident">manifest_digest</span>))
-    }
-
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>,
-        <span class="ident">source_image_digest</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">cosign_image</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">public_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">annotations</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimpleSigning</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cosign_image_reference</span>: <span class="ident">oci_distribution::Reference</span> <span class="op">=</span> <span class="ident">cosign_image</span>
-            .<span class="ident">parse</span>()
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Cannot parse image reference &#39;{}&#39;: {:?}&quot;</span>, <span class="ident">cosign_image</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">oci_auth</span>: <span class="ident">oci_distribution::secrets::RegistryAuth</span> <span class="op">=</span> <span class="ident">auth</span>.<span class="ident">into</span>();
-
-        <span class="kw">let</span> <span class="ident">verification_key</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::crypto::new_verification_key</span>(<span class="ident">public_key</span>)<span class="question-mark">?</span>;
-
-        <span class="kw">let</span> (<span class="ident">manifest</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">registry_client</span>
-            .<span class="ident">pull_manifest</span>(<span class="kw-2">&amp;</span><span class="ident">cosign_image_reference</span>, <span class="kw-2">&amp;</span><span class="ident">oci_auth</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="macro">anyhow!</span>(
-                    <span class="string">&quot;Cannot pull manifest for image {:?}: {:?}&quot;</span>,
-                    <span class="ident">cosign_image_reference</span>,
-                    <span class="ident">e</span>
-                )
-            })<span class="question-mark">?</span>;
-
-        <span class="kw">let</span> <span class="ident">signatures</span> <span class="op">=</span> <span class="ident">image_signatures</span>(<span class="ident">manifest</span>);
-        <span class="kw">let</span> <span class="ident">layers</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">registry_client</span>
-            .<span class="ident">pull</span>(
-                <span class="kw-2">&amp;</span><span class="ident">cosign_image_reference</span>,
-                <span class="kw-2">&amp;</span><span class="ident">oci_auth</span>,
-                <span class="macro">vec!</span>[<span class="ident">SIGSTORE_OCI_MEDIA_TYPE</span>],
-            )
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="macro">anyhow!</span>(
-                    <span class="string">&quot;Cannot pull data for image {:?}: {:?}&quot;</span>,
-                    <span class="ident">cosign_image_reference</span>,
-                    <span class="ident">e</span>
-                )
-            })<span class="question-mark">?</span>
-            .<span class="ident">layers</span>;
-
-        <span class="ident"><span class="kw">crate</span>::crypto::verify_layers</span>(
-            <span class="ident">String::from</span>(<span class="ident">source_image_digest</span>),
-            <span class="ident">layers</span>,
-            <span class="ident">signatures</span>,
-            <span class="ident">annotations</span>,
-            <span class="kw-2">&amp;</span><span class="ident">verification_key</span>,
-        )
-    }
-}
-
-<span class="comment">// Return all the signatures stored inside of the given image manifest</span>
-<span class="kw">fn</span> <span class="ident">image_signatures</span>(<span class="ident">manifest</span>: <span class="ident">oci_distribution::manifest::OciManifest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">signatures</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-
-    <span class="kw">for</span> <span class="ident">layer</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">manifest</span>.<span class="ident">layers</span> {
-        <span class="kw">if</span> <span class="ident">layer</span>.<span class="ident">media_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SIGSTORE_OCI_MEDIA_TYPE</span> {
-            <span class="kw">continue</span>;
-        }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">signature</span>) <span class="op">=</span> <span class="ident">layer</span>
-            .<span class="ident">annotations</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">String::from</span>(<span class="ident">SIGSTORE_SIGNATURE_ANNOTATION</span>)).<span class="ident">cloned</span>())
-        {
-            <span class="ident">signatures</span>.<span class="ident">insert</span>(<span class="ident">layer</span>.<span class="ident">digest</span>.<span class="ident">clone</span>(), <span class="ident">signature</span>);
-        }
-    }
-    <span class="ident">signatures</span>
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="ident">serde_json::json</span>;
+    <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mock_client::test::MockOciClient</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::signature_layers::tests::build_correct_signature_layer_with_certificate</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::signature_layers::CertificateSubject</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::verification_constraint</span>::{<span class="ident">AnnotationVerifier</span>, <span class="ident">CertSubjectEmailVerifier</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::crypto</span>::{<span class="self">self</span>, <span class="ident">extract_public_key_from_pem_cert</span>, <span class="ident">CosignVerificationKey</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::simple_signing::Optional</span>;
 
-    <span class="attribute">#[<span class="ident">tokio::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">triangulate_sigstore_object</span>() {
-        <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="string">&quot;docker.io/busybox:latest&quot;</span>;
-        <span class="kw">let</span> <span class="ident">image_digest</span> <span class="op">=</span>
-            <span class="ident">String::from</span>(<span class="string">&quot;sha256:f3cfc9d0dbf931d3db4685ec659b7ac68e2a578219da4aae65427886e649b06b&quot;</span>);
-        <span class="kw">let</span> <span class="ident">expected_image</span> <span class="op">=</span> <span class="string">&quot;docker.io/busybox:sha256-f3cfc9d0dbf931d3db4685ec659b7ac68e2a578219da4aae65427886e649b06b.sig&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">mock_client</span> <span class="op">=</span> <span class="ident">MockOciClient</span> {
-            <span class="ident">fetch_manifest_digest_response</span>: <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">image_digest</span>.<span class="ident">clone</span>())),
-            <span class="ident">pull_response</span>: <span class="prelude-val">None</span>,
-            <span class="ident">pull_manifest_response</span>: <span class="prelude-val">None</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">REKOR_PUB_KEY</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">r#&quot;-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2G2Y+2tabdTV5BcGiBIx0a9fAFwr
+kBbmLSGtks4L3qX6yYY0zufBnhC8Ur/iy55GhWP/9A/bY2LhC30M9+RYtw==
+-----END PUBLIC KEY-----&quot;#</span>;
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">FULCIO_CRT_PEM</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">r#&quot;-----BEGIN CERTIFICATE-----
+MIIB+DCCAX6gAwIBAgITNVkDZoCiofPDsy7dfm6geLbuhzAKBggqhkjOPQQDAzAq
+MRUwEwYDVQQKEwxzaWdzdG9yZS5kZXYxETAPBgNVBAMTCHNpZ3N0b3JlMB4XDTIx
+MDMwNzAzMjAyOVoXDTMxMDIyMzAzMjAyOVowKjEVMBMGA1UEChMMc2lnc3RvcmUu
+ZGV2MREwDwYDVQQDEwhzaWdzdG9yZTB2MBAGByqGSM49AgEGBSuBBAAiA2IABLSy
+A7Ii5k+pNO8ZEWY0ylemWDowOkNa3kL+GZE5Z5GWehL9/A9bRNA3RbrsZ5i0Jcas
+taRL7Sp5fp/jD5dxqc/UdTVnlvS16an+2Yfswe/QuLolRUCrcOE2+2iA5+tzd6Nm
+MGQwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYE
+FMjFHQBBmiQpMlEk6w2uSu1KBtPsMB8GA1UdIwQYMBaAFMjFHQBBmiQpMlEk6w2u
+Su1KBtPsMAoGCCqGSM49BAMDA2gAMGUCMH8liWJfMui6vXXBhjDgY4MwslmN/TJx
+Ve/83WrFomwmNf056y1X48F9c4m3a3ozXAIxAKjRay5/aj/jsKKGIkmQatjI8uup
+Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
+-----END CERTIFICATE-----&quot;#</span>;
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_fulcio_public_key</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+        <span class="ident">extract_public_key_from_pem_cert</span>(<span class="ident">FULCIO_CRT_PEM</span>.<span class="ident">as_bytes</span>())
+            .<span class="ident">expect</span>(<span class="string">&quot;Cannot extract public key from Fulcio hard-coded cert&quot;</span>)
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_rekor_public_key</span>() -&gt; <span class="ident">CosignVerificationKey</span> {
+        <span class="ident">crypto::new_verification_key</span>(<span class="ident">REKOR_PUB_KEY</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot create test REKOR_PUB_KEY&quot;</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">filter_signature_layers_matches</span>() {
+        <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="string">&quot;alice@example.com&quot;</span>.<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">issuer</span> <span class="op">=</span> <span class="string">&quot;an issuer&quot;</span>.<span class="ident">to_string</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="string">&quot;key1&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;value1&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="string">&quot;key2&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;value2&quot;</span>.<span class="ident">into</span>());
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="ident">expected_matches</span> <span class="op">=</span> <span class="number">5</span>;
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">expected_matches</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sl</span> <span class="op">=</span> <span class="ident">build_correct_signature_layer_with_certificate</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cert_signature</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">certificate_signature</span>.<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">cert_subj</span> <span class="op">=</span> <span class="ident">CertificateSubject::Email</span>(<span class="ident">email</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">issuer</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">subject</span> <span class="op">=</span> <span class="ident">cert_subj</span>;
+            <span class="ident">sl</span>.<span class="ident">certificate_signature</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cert_signature</span>);
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">extra</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">annotations</span>
+                .<span class="ident">iter</span>()
+                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">clone</span>(), <span class="macro">json!</span>(<span class="ident">v</span>)))
+                .<span class="ident">collect</span>();
+            <span class="ident">extra</span>.<span class="ident">insert</span>(<span class="string">&quot;something extra&quot;</span>.<span class="ident">into</span>(), <span class="macro">json!</span>(<span class="string">&quot;value extra&quot;</span>));
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">simple_signing</span>;
+            <span class="kw">let</span> <span class="ident">optional</span> <span class="op">=</span> <span class="ident">Optional</span> {
+                <span class="ident">creator</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">into</span>()),
+                <span class="ident">timestamp</span>: <span class="prelude-val">None</span>,
+                <span class="ident">extra</span>,
+            };
+            <span class="ident">simple_signing</span>.<span class="ident">optional</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">optional</span>);
+            <span class="ident">sl</span>.<span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">simple_signing</span>;
+
+            <span class="ident">layers</span>.<span class="ident">push</span>(<span class="ident">sl</span>);
+        }
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
+            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>()),
         };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cosign_client</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::cosign::Client</span> {
-            <span class="ident">registry_client</span>: <span class="ident">Box::new</span>(<span class="ident">mock_client</span>),
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
+            <span class="ident">issuer</span>: <span class="prelude-val">None</span>,
         };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
-        <span class="kw">let</span> <span class="ident">reference</span> <span class="op">=</span> <span class="ident">cosign_client</span>
-            .<span class="ident">triangulate</span>(<span class="ident">image</span>, <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::registry::Auth::Anonymous</span>)
-            .<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">AnnotationVerifier</span> { <span class="ident">annotations</span> };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
-        <span class="macro">assert!</span>(<span class="ident">reference</span>.<span class="ident">is_ok</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">reference</span>.<span class="ident">unwrap</span>(), (<span class="ident">expected_image</span>, <span class="ident">image_digest</span>));
+        <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="ident">filter_signature_layers</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Should not have returned an error&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">matches</span>.<span class="ident">len</span>(), <span class="ident">expected_matches</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">filter_signature_layers_no_matches</span>() {
+        <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="string">&quot;alice@example.com&quot;</span>.<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">issuer</span> <span class="op">=</span> <span class="string">&quot;an issuer&quot;</span>.<span class="ident">to_string</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="string">&quot;key1&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;value1&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="string">&quot;key2&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;value2&quot;</span>.<span class="ident">into</span>());
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="ident">expected_matches</span> <span class="op">=</span> <span class="number">5</span>;
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">expected_matches</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sl</span> <span class="op">=</span> <span class="ident">build_correct_signature_layer_with_certificate</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cert_signature</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">certificate_signature</span>.<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">cert_subj</span> <span class="op">=</span> <span class="ident">CertificateSubject::Email</span>(<span class="ident">email</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">issuer</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">subject</span> <span class="op">=</span> <span class="ident">cert_subj</span>;
+            <span class="ident">sl</span>.<span class="ident">certificate_signature</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cert_signature</span>);
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">extra</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+            <span class="ident">extra</span>.<span class="ident">insert</span>(<span class="string">&quot;something extra&quot;</span>.<span class="ident">into</span>(), <span class="macro">json!</span>(<span class="string">&quot;value extra&quot;</span>));
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">simple_signing</span>;
+            <span class="kw">let</span> <span class="ident">optional</span> <span class="op">=</span> <span class="ident">Optional</span> {
+                <span class="ident">creator</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">into</span>()),
+                <span class="ident">timestamp</span>: <span class="prelude-val">None</span>,
+                <span class="ident">extra</span>,
+            };
+            <span class="ident">simple_signing</span>.<span class="ident">optional</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">optional</span>);
+            <span class="ident">sl</span>.<span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">simple_signing</span>;
+
+            <span class="ident">layers</span>.<span class="ident">push</span>(<span class="ident">sl</span>);
+        }
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
+            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>()),
+        };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
+
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
+            <span class="ident">issuer</span>: <span class="prelude-val">None</span>,
+        };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
+
+        <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">AnnotationVerifier</span> { <span class="ident">annotations</span> };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
+
+        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span>
+            <span class="ident">filter_signature_layers</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>).<span class="ident">expect_err</span>(<span class="string">&quot;Should have god an error&quot;</span>);
+        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">error</span> {
+            <span class="ident">SigstoreError::SigstoreNoVerifiedLayer</span> =&gt; <span class="bool-val">true</span>,
+            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
+        };
+        <span class="macro">assert!</span>(<span class="ident">found</span>, <span class="string">&quot;Didn&#39;t get the expected error, got {}&quot;</span>, <span class="ident">error</span>);
     }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="sigstore" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>
