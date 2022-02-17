@@ -176,6 +176,7 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2022 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -317,13 +318,14 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::tests</span>::{<span class="ident">FULCIO_CRT_PEM</span>, <span class="ident">REKOR_PUB_KEY</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">crypto</span>::{<span class="self">self</span>},
-        <span class="ident">mock_client::test::MockOciClient</span>,
-    };
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">crypto::SignatureDigestAlgorithm</span>, <span class="ident">mock_client::test::MockOciClient</span>};
 
     <span class="kw">fn</span> <span class="ident">build_test_client</span>(<span class="ident">mock_client</span>: <span class="ident">MockOciClient</span>) -&gt; <span class="ident">Client</span> {
-        <span class="kw">let</span> <span class="ident">rekor_pub_key</span> <span class="op">=</span> <span class="ident">crypto::new_verification_key</span>(<span class="ident">REKOR_PUB_KEY</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">rekor_pub_key</span> <span class="op">=</span> <span class="ident">CosignVerificationKey::from_pem</span>(
+            <span class="ident">REKOR_PUB_KEY</span>.<span class="ident">as_bytes</span>(),
+            <span class="ident">SignatureDigestAlgorithm::default</span>(),
+        )
+        .<span class="ident">expect</span>(<span class="string">&quot;Cannot create CosignVerificationKey&quot;</span>);
 
         <span class="ident">Client</span> {
             <span class="ident">registry_client</span>: <span class="ident">Box::new</span>(<span class="ident">mock_client</span>),

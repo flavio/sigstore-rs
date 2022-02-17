@@ -115,6 +115,12 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2021 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -145,6 +151,9 @@
     <span class="ident">PEMParseError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">x509_parser::nom::Err</span><span class="op">&lt;</span><span class="ident">x509_parser::error::PEMError</span><span class="op">&gt;</span>),
 
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+    <span class="ident">FromPEMError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">pem::PemError</span>),
+
+    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">X509ParseError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">x509_parser::nom::Err</span><span class="op">&lt;</span><span class="ident">x509_parser::error::X509Error</span><span class="op">&gt;</span>),
 
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
@@ -153,8 +162,11 @@
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">Base64DecodeError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">base64::DecodeError</span>),
 
-    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-    <span class="ident">EcdsaError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ecdsa::Error</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Public key with unsupported algorithm: {0}&quot;</span>)]</span>
+    <span class="ident">PublicKeyUnsupportedAlgorithmError</span>(<span class="ident">String</span>),
+
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Public key verification error&quot;</span>)]</span>
+    <span class="ident">PublicKeyVerificationError</span>,
 
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Certificate validity check failed: cannot be used before {0}&quot;</span>)]</span>
     <span class="ident">CertificateValidityError</span>(<span class="ident">String</span>),

@@ -168,6 +168,9 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2021 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -238,6 +241,7 @@
 <span class="doccomment">//!     PublicKeyVerifier,</span>
 <span class="doccomment">//!     VerificationConstraintVec,</span>
 <span class="doccomment">//! };</span>
+<span class="doccomment">//! use crate::sigstore::crypto::SignatureDigestAlgorithm;</span>
 <span class="doccomment">//! use crate::sigstore::errors::SigstoreError;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! use std::boxed::Box;</span>
@@ -281,10 +285,12 @@
 <span class="doccomment">//!     annotations,</span>
 <span class="doccomment">//!   };</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   let verification_key = fs::read_to_string(&quot;~/cosign.pub&quot;)</span>
+<span class="doccomment">//!   let verification_key = fs::read(&quot;~/cosign.pub&quot;)</span>
 <span class="doccomment">//!     .expect(&quot;Cannot read contents of cosign public key&quot;);</span>
 <span class="doccomment">//!   let pub_key_verifier = PublicKeyVerifier::new(</span>
-<span class="doccomment">//!     &amp;verification_key).expect(&quot;Could not create verifier&quot;);</span>
+<span class="doccomment">//!     &amp;verification_key,</span>
+<span class="doccomment">//!     SignatureDigestAlgorithm::default(),</span>
+<span class="doccomment">//!   ).expect(&quot;Could not create verifier&quot;);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!   let verification_constraints: VerificationConstraintVec = vec![</span>
 <span class="doccomment">//!     Box::new(annotation_verifier),</span>
@@ -329,7 +335,7 @@
 <span class="doccomment">//! Additional examples can be found inside of the [`examples`](https://github.com/sigstore/sigstore-rs/tree/main/examples/)</span>
 <span class="doccomment">//! directory.</span>
 
-<span class="kw">mod</span> <span class="ident">crypto</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">crypto</span>;
 <span class="kw">mod</span> <span class="ident">mock_client</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cosign</span>;

@@ -109,6 +109,11 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2022 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -127,7 +132,9 @@
 <span class="kw">use</span> <span class="ident">tracing::info</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::client::Client</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::crypto</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::crypto</span>::{
+    <span class="ident">certificate::extract_public_key_from_pem_cert</span>, <span class="ident">CosignVerificationKey</span>, <span class="ident">SignatureDigestAlgorithm</span>,
+};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors::Result</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::registry::ClientConfig</span>;
 
@@ -197,7 +204,10 @@
                 <span class="macro">info!</span>(<span class="string">&quot;rekor public key not provided&quot;</span>);
                 <span class="prelude-val">None</span>
             }
-            <span class="prelude-val">Some</span>(<span class="ident">der</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">crypto::new_verification_key</span>(<span class="kw-2">&amp;</span><span class="ident">der</span>)<span class="question-mark">?</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">data</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">CosignVerificationKey::from_pem</span>(
+                <span class="ident">data</span>.<span class="ident">as_bytes</span>(),
+                <span class="ident">SignatureDigestAlgorithm::default</span>(),
+            )<span class="question-mark">?</span>),
         };
 
         <span class="kw">let</span> <span class="ident">fulcio_pub_key_der</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">fulcio_cert</span> {
@@ -205,7 +215,7 @@
                 <span class="macro">info!</span>(<span class="string">&quot;The fulcio cert has not been provided&quot;</span>);
                 <span class="prelude-val">None</span>
             }
-            <span class="prelude-val">Some</span>(<span class="ident">cert</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">crypto::extract_public_key_from_pem_cert</span>(<span class="kw-2">&amp;</span><span class="ident">cert</span>)<span class="question-mark">?</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">cert</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">extract_public_key_from_pem_cert</span>(<span class="kw-2">&amp;</span><span class="ident">cert</span>)<span class="question-mark">?</span>),
         };
 
         <span class="kw">let</span> <span class="ident">oci_client</span> <span class="op">=</span>
