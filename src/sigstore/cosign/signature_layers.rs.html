@@ -969,9 +969,9 @@
     <span class="doccomment">/// The bundle produced by Rekor.</span>
     <span class="kw">pub</span> <span class="ident">bundle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Bundle</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing</span>)]</span>
-    <span class="ident">signature</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">signature</span>: <span class="ident">String</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing</span>)]</span>
-    <span class="ident">raw_data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">raw_data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SignatureLayer</span> {
