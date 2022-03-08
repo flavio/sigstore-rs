@@ -281,6 +281,65 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2021 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -322,7 +381,7 @@
 <span class="kw">use</span> <span class="ident">async_trait::async_trait</span>;
 <span class="kw">use</span> <span class="ident">tracing::warn</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::{<span class="prelude-ty">Result</span>, <span class="ident">SigstoreError</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::{<span class="prelude-ty">Result</span>, <span class="ident">SigstoreVerifyConstraintsError</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::registry::Auth</span>;
 
 <span class="kw">mod</span> <span class="ident">bundle</span>;
@@ -337,7 +396,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::client_builder::ClientBuilder</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">verification_constraint</span>;
-<span class="kw">use</span> <span class="ident">verification_constraint::VerificationConstraintVec</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::verification_constraint</span>::{<span class="ident">VerificationConstraint</span>, <span class="ident">VerificationConstraintRefVec</span>};
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="doccomment">/// Cosign Abilities that have to be implemented by a</span>
@@ -359,8 +418,9 @@
     <span class="doccomment">/// signature image. All the Bundled objects have been verified using Rekor&#39;s</span>
     <span class="doccomment">/// signature.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// These returned objects can then be filtered using the [`filter_signature_layers`]</span>
-    <span class="doccomment">/// function.</span>
+    <span class="doccomment">/// These returned objects can then be verified against</span>
+    <span class="doccomment">/// [`VerificationConstraints`](crate::cosign::verification_constraint::VerificationConstraint)</span>
+    <span class="doccomment">/// using the [`verify_constraints`] function.</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">trusted_signature_layers</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">auth</span>: <span class="kw-2">&amp;</span><span class="ident">Auth</span>,
@@ -369,41 +429,54 @@
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
-<span class="doccomment">/// Given a list of trusted `SignatureLayer`, find all the layers that satisfy</span>
-<span class="doccomment">/// the given constraints.</span>
+<span class="doccomment">/// Given a list of trusted `SignatureLayer`, find all the constraints that</span>
+<span class="doccomment">/// aren&#39;t satisfied by the layers.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If there&#39;s any unsatisfied constraints it means that the image failed</span>
+<span class="doccomment">/// verification.</span>
+<span class="doccomment">/// If there&#39;s no unsatisfied constraints it means that the image passed</span>
+<span class="doccomment">/// verification.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Returns a `Result` with either `Ok()` for passed verification or</span>
+<span class="doccomment">/// [`SigstoreVerifyConstraintsError`](crate::errors::SigstoreVerifyConstraintsError),</span>
+<span class="doccomment">/// which contains a vector of references to unsatisfied constraints.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See the documentation of the [`cosign::verification_constraint`](crate::cosign::verification_constraint) module for more</span>
 <span class="doccomment">/// details about how to define verification constraints.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter_signature_layers</span>(
-    <span class="ident">signature_layers</span>: <span class="kw-2">&amp;</span>[<span class="ident">SignatureLayer</span>],
-    <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">signature_layers</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">sl</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">is_a_match</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">is_empty</span>() {
-                    <span class="bool-val">true</span>
-                } <span class="kw">else</span> {
-                    <span class="ident">constraints</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
-                        <span class="kw">match</span> <span class="ident">c</span>.<span class="ident">verify</span>(<span class="ident">sl</span>) {
-                            <span class="prelude-val">Ok</span>(<span class="ident">verification_passed</span>) =&gt; <span class="ident">verification_passed</span>,
-                            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                                <span class="macro">warn!</span>(<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="ident">constraint</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">c</span>, <span class="string">&quot;Skipping layer because constraint verification returned an error&quot;</span>);
-                                <span class="comment">// handle errors as verification failures</span>
-                                <span class="bool-val">false</span>
-                            }
-                        }
-                    })
-                };
-                <span class="ident">is_a_match</span>
-            })
-            .<span class="ident">cloned</span>()
-            .<span class="ident">collect</span>();
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">verify_constraints</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">I</span><span class="op">&gt;</span>(
+    <span class="ident">signature_layers</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">SignatureLayer</span>],
+    <span class="ident">constraints</span>: <span class="ident">I</span>,
+) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">SigstoreVerifyConstraintsError</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">VerificationConstraint</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+{
+    <span class="kw">let</span> <span class="ident">unsatisfied_constraints</span>: <span class="ident">VerificationConstraintRefVec</span> <span class="op">=</span> <span class="ident">constraints</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">is_c_unsatisfied</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="ident">signature_layers</span>.<span class="ident">iter</span>().<span class="ident">any</span>( <span class="op">|</span> <span class="ident">sl</span> <span class="op">|</span> {
+            <span class="comment">// iterate through all layers and find if at least one layer</span>
+            <span class="comment">// satisfies constraint. If so, we stop iterating</span>
+            <span class="kw">match</span> <span class="ident">c</span>.<span class="ident">verify</span>(<span class="ident">sl</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">is_sl_verified</span>) =&gt; {
+                    <span class="ident">is_c_unsatisfied</span> <span class="op">=</span> <span class="op">!</span><span class="ident">is_sl_verified</span>;
+                    <span class="ident">is_sl_verified</span> <span class="comment">// if true, stop searching</span>
+                }
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                    <span class="macro">warn!</span>(<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="ident">constraint</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">c</span>, <span class="string">&quot;Skipping layer because constraint verification returned an error&quot;</span>);
+                    <span class="comment">// handle errors as verification failures</span>
+                    <span class="ident">is_c_unsatisfied</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                    <span class="bool-val">false</span> <span class="comment">// keep searching to see if other layer satisfies</span>
+                }
+            }
+        });
+        <span class="ident">is_c_unsatisfied</span> <span class="comment">// if true, constraint gets filtered into result</span>
+    }).<span class="ident">collect</span>();
 
-    <span class="kw">if</span> <span class="ident">layers</span>.<span class="ident">is_empty</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">SigstoreError::SigstoreNoVerifiedLayer</span>)
+    <span class="kw">if</span> <span class="ident">unsatisfied_constraints</span>.<span class="ident">is_empty</span>() {
+        <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">layers</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">SigstoreVerifyConstraintsError</span> {
+            <span class="ident">unsatisfied_constraints</span>,
+        })
     }
 }
 
@@ -415,7 +488,9 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::signature_layers::tests::build_correct_signature_layer_with_certificate</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::signature_layers::CertificateSubject</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::verification_constraint</span>::{<span class="ident">AnnotationVerifier</span>, <span class="ident">CertSubjectEmailVerifier</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cosign::verification_constraint</span>::{
+        <span class="ident">AnnotationVerifier</span>, <span class="ident">CertSubjectEmailVerifier</span>, <span class="ident">VerificationConstraintVec</span>,
+    };
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::crypto</span>::{
         <span class="ident">certificate::extract_public_key_from_pem_cert</span>, <span class="ident">CosignVerificationKey</span>,
         <span class="ident">SignatureDigestAlgorithm</span>,
@@ -455,7 +530,7 @@ Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">filter_signature_layers_matches</span>() {
+    <span class="kw">fn</span> <span class="ident">verify_constraints_all_satisfied</span>() {
         <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="string">&quot;alice@example.com&quot;</span>.<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">issuer</span> <span class="op">=</span> <span class="string">&quot;an issuer&quot;</span>.<span class="ident">to_string</span>();
 
@@ -464,8 +539,7 @@ Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
         <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="string">&quot;key2&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;value2&quot;</span>.<span class="ident">into</span>());
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="ident">expected_matches</span> <span class="op">=</span> <span class="number">5</span>;
-        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">expected_matches</span> {
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">5</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sl</span> <span class="op">=</span> <span class="ident">build_correct_signature_layer_with_certificate</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cert_signature</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">certificate_signature</span>.<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">cert_subj</span> <span class="op">=</span> <span class="ident">CertificateSubject::Email</span>(<span class="ident">email</span>.<span class="ident">clone</span>());
@@ -494,12 +568,12 @@ Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
             <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
-            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>()),
+            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>),
         };
         <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
         <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
-            <span class="ident">email</span>: <span class="ident">email</span>.<span class="ident">clone</span>(),
+            <span class="ident">email</span>,
             <span class="ident">issuer</span>: <span class="prelude-val">None</span>,
         };
         <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
@@ -507,20 +581,17 @@ Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
         <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">AnnotationVerifier</span> { <span class="ident">annotations</span> };
         <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
-        <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="ident">filter_signature_layers</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;Should not have returned an error&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">matches</span>.<span class="ident">len</span>(), <span class="ident">expected_matches</span>);
+        <span class="ident">verify_constraints</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>.<span class="ident">iter</span>()).<span class="ident">expect</span>(<span class="string">&quot;should not return an error&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">filter_signature_layers_no_matches</span>() {
+    <span class="kw">fn</span> <span class="ident">verify_constraints_none_satisfied</span>() {
         <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="string">&quot;alice@example.com&quot;</span>.<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">issuer</span> <span class="op">=</span> <span class="string">&quot;an issuer&quot;</span>.<span class="ident">to_string</span>();
-        <span class="kw">let</span> <span class="ident">email_constraint</span> <span class="op">=</span> <span class="string">&quot;bob@example.com&quot;</span>.<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">wrong_email</span> <span class="op">=</span> <span class="string">&quot;bob@example.com&quot;</span>.<span class="ident">to_string</span>();
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="ident">expected_matches</span> <span class="op">=</span> <span class="number">5</span>;
-        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">expected_matches</span> {
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">5</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sl</span> <span class="op">=</span> <span class="ident">build_correct_signature_layer_with_certificate</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cert_signature</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">certificate_signature</span>.<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">cert_subj</span> <span class="op">=</span> <span class="ident">CertificateSubject::Email</span>(<span class="ident">email</span>.<span class="ident">clone</span>());
@@ -545,21 +616,68 @@ Hr/+CxFvaJWmpYqNkLDGRU+9orzh5hI2RrcuaQ==
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
-            <span class="ident">email</span>: <span class="ident">email_constraint</span>.<span class="ident">clone</span>(),
-            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>()),
+            <span class="ident">email</span>: <span class="ident">wrong_email</span>.<span class="ident">clone</span>(),
+            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>), <span class="comment">// correct issuer</span>
         };
         <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
         <span class="kw">let</span> <span class="ident">vc</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
-            <span class="ident">email</span>: <span class="ident">email_constraint</span>.<span class="ident">clone</span>(),
-            <span class="ident">issuer</span>: <span class="prelude-val">None</span>,
+            <span class="ident">email</span>: <span class="ident">wrong_email</span>,
+            <span class="ident">issuer</span>: <span class="prelude-val">None</span>, <span class="comment">// missing issuer, more relaxed</span>
         };
         <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">vc</span>));
 
-        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span>
-            <span class="ident">filter_signature_layers</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>).<span class="ident">expect_err</span>(<span class="string">&quot;Should have got an error&quot;</span>);
-        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="macro">matches!</span>(<span class="ident">error</span>, <span class="ident">SigstoreError::SigstoreNoVerifiedLayer</span>);
-        <span class="macro">assert!</span>(<span class="ident">found</span>, <span class="string">&quot;Didn&#39;t get the expected error, got {}&quot;</span>, <span class="ident">error</span>);
+        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span>
+            <span class="ident">verify_constraints</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>.<span class="ident">iter</span>()).<span class="ident">expect_err</span>(<span class="string">&quot;we should have an err&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">unsatisfied_constraints</span>.<span class="ident">len</span>(), <span class="number">2</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">verify_constraints_some_unsatisfied</span>() {
+        <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="string">&quot;alice@example.com&quot;</span>.<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">issuer</span> <span class="op">=</span> <span class="string">&quot;an issuer&quot;</span>.<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">email_incorrect</span> <span class="op">=</span> <span class="string">&quot;bob@example.com&quot;</span>.<span class="ident">to_string</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">layers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignatureLayer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">5</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sl</span> <span class="op">=</span> <span class="ident">build_correct_signature_layer_with_certificate</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cert_signature</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">certificate_signature</span>.<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">cert_subj</span> <span class="op">=</span> <span class="ident">CertificateSubject::Email</span>(<span class="ident">email</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">issuer</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">issuer</span>.<span class="ident">clone</span>());
+            <span class="ident">cert_signature</span>.<span class="ident">subject</span> <span class="op">=</span> <span class="ident">cert_subj</span>;
+            <span class="ident">sl</span>.<span class="ident">certificate_signature</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cert_signature</span>);
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">extra</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+            <span class="ident">extra</span>.<span class="ident">insert</span>(<span class="string">&quot;something extra&quot;</span>.<span class="ident">into</span>(), <span class="macro">json!</span>(<span class="string">&quot;value extra&quot;</span>));
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">sl</span>.<span class="ident">simple_signing</span>;
+            <span class="kw">let</span> <span class="ident">optional</span> <span class="op">=</span> <span class="ident">Optional</span> {
+                <span class="ident">creator</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">into</span>()),
+                <span class="ident">timestamp</span>: <span class="prelude-val">None</span>,
+                <span class="ident">extra</span>,
+            };
+            <span class="ident">simple_signing</span>.<span class="ident">optional</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">optional</span>);
+            <span class="ident">sl</span>.<span class="ident">simple_signing</span> <span class="op">=</span> <span class="ident">simple_signing</span>;
+
+            <span class="ident">layers</span>.<span class="ident">push</span>(<span class="ident">sl</span>);
+        }
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">constraints</span>: <span class="ident">VerificationConstraintVec</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="ident">satisfied_constraint</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>,
+            <span class="ident">issuer</span>: <span class="prelude-val">Some</span>(<span class="ident">issuer</span>),
+        };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">satisfied_constraint</span>));
+
+        <span class="kw">let</span> <span class="ident">unsatisfied_constraint</span> <span class="op">=</span> <span class="ident">CertSubjectEmailVerifier</span> {
+            <span class="ident">email</span>: <span class="ident">email_incorrect</span>,
+            <span class="ident">issuer</span>: <span class="prelude-val">None</span>,
+        };
+        <span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">unsatisfied_constraint</span>));
+
+        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span>
+            <span class="ident">verify_constraints</span>(<span class="kw-2">&amp;</span><span class="ident">layers</span>, <span class="ident">constraints</span>.<span class="ident">iter</span>()).<span class="ident">expect_err</span>(<span class="string">&quot;we should have an err&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">unsatisfied_constraints</span>.<span class="ident">len</span>(), <span class="number">1</span>);
     }
 }
 </code></pre></div>

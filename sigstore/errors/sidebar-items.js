@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SigstoreError",""]],"type":[["Result",""]]});
+initSidebarItems({"enum":[["SigstoreError",""]],"struct":[["SigstoreVerifyConstraintsError",""]],"type":[["Result",""]]});

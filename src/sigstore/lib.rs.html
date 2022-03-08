@@ -170,8 +170,6 @@
 <span id="168">168</span>
 <span id="169">169</span>
 <span id="170">170</span>
-<span id="171">171</span>
-<span id="172">172</span>
 </pre><pre class="rust"><code><span class="comment">//</span>
 <span class="comment">// Copyright 2021 The Sigstore Authors.</span>
 <span class="comment">//</span>
@@ -235,7 +233,7 @@
 <span class="doccomment">//! ```rust,no_run</span>
 <span class="doccomment">//! use crate::sigstore::cosign::{</span>
 <span class="doccomment">//!     CosignCapabilities,</span>
-<span class="doccomment">//!     filter_signature_layers,</span>
+<span class="doccomment">//!     verify_constraints,</span>
 <span class="doccomment">//! };</span>
 <span class="doccomment">//! use crate::sigstore::cosign::verification_constraint::{</span>
 <span class="doccomment">//!     AnnotationVerifier,</span>
@@ -244,6 +242,7 @@
 <span class="doccomment">//! };</span>
 <span class="doccomment">//! use crate::sigstore::crypto::SignatureDigestAlgorithm;</span>
 <span class="doccomment">//! use crate::sigstore::errors::SigstoreError;</span>
+<span class="doccomment">//! use sigstore::errors::SigstoreVerifyConstraintsError;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! use std::boxed::Box;</span>
 <span class="doccomment">//! use std::collections::HashMap;</span>
@@ -298,26 +297,23 @@
 <span class="doccomment">//!     Box::new(pub_key_verifier),</span>
 <span class="doccomment">//!   ];</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   // Filter all the trusted layers, find the ones satisfying the constraints</span>
-<span class="doccomment">//!   // we just defined</span>
-<span class="doccomment">//!   let signatures_matching_requirements = filter_signature_layers(</span>
+<span class="doccomment">//!   // Use the given list of constraints to verify the trusted</span>
+<span class="doccomment">//!   // `signature_layers`. This will raise an error if one or more verification</span>
+<span class="doccomment">//!   // constraints are not satisfied.</span>
+<span class="doccomment">//!   let result = verify_constraints(</span>
 <span class="doccomment">//!     &amp;signature_layers,</span>
-<span class="doccomment">//!     verification_constraints);</span>
+<span class="doccomment">//!     verification_constraints.iter());</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   match signatures_matching_requirements {</span>
-<span class="doccomment">//!     Err(SigstoreError::SigstoreNoVerifiedLayer) =&gt; {</span>
-<span class="doccomment">//!       panic!(&quot;no signature is matching the requirements&quot;)</span>
-<span class="doccomment">//!     },</span>
-<span class="doccomment">//!     Err(e) =&gt; {</span>
-<span class="doccomment">//!       panic!(&quot;Something went wrong while verifying the image: {}&quot;, e)</span>
-<span class="doccomment">//!     },</span>
-<span class="doccomment">//!     Ok(signatures) =&gt; {</span>
-<span class="doccomment">//!       println!(&quot;signatures matching the requirements:&quot;);</span>
-<span class="doccomment">//!       serde_json::to_writer_pretty(</span>
-<span class="doccomment">//!           std::io::stdout(),</span>
-<span class="doccomment">//!           &amp;signatures,</span>
-<span class="doccomment">//!       ).unwrap();</span>
-<span class="doccomment">//!     }</span>
+<span class="doccomment">//!   match result {</span>
+<span class="doccomment">//!       Ok(()) =&gt; {</span>
+<span class="doccomment">//!           println!(&quot;Image successfully verified&quot;);</span>
+<span class="doccomment">//!       }</span>
+<span class="doccomment">//!       Err(SigstoreVerifyConstraintsError {</span>
+<span class="doccomment">//!           unsatisfied_constraints,</span>
+<span class="doccomment">//!       }) =&gt; {</span>
+<span class="doccomment">//!           println!(&quot;{:?}&quot;, unsatisfied_constraints);</span>
+<span class="doccomment">//!           panic!(&quot;Image verification failed&quot;)</span>
+<span class="doccomment">//!       }</span>
 <span class="doccomment">//!   }</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
