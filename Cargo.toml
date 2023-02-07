@@ -75,7 +75,7 @@ scrypt = "0.10.0"
 serde = { version = "1.0.136", features = ["derive"] }
 serde_json = "1.0.79"
 sha2 = { version = "0.10.6", features = ["oid"] }
-signature = { version = "1.5.0", features = [ "digest-preview" ] }
+signature = { version = "2.0.0", features = [ "digest-preview" ] }
 thiserror = "1.0.30"
 tokio = { version = "1.17.0", features = ["full"] }
 tough = { version = "0.12", features = [ "http" ], optional = true }
