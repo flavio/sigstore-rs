@@ -61,7 +61,7 @@ oci-distribution = { version = "0.9", default-features = false, optional = true 
 olpc-cjson = "0.1"
 open = "3.0.1"
 openidconnect = { version = "2.3", default-features = false, features = [ "reqwest" ], optional = true}
-p256 = "0.11.1"
+p256 = "0.12.0"
 p384 = "0.11.1"
 pem = "1.0.2"
 picky = { version = "7.0.0-rc.3", default-features = false, features = [ "x509", "ec" ] }
